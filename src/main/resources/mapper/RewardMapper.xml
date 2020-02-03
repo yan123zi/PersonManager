@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxxy.personManagement.mapper.RewardMapper">
+  <resultMap id="BaseResultMap" type="com.pxxy.personManagement.domain.Reward">
+    <id column="re_repuid" jdbcType="INTEGER" property="reRepuid" />
+    <!-- <result column="e_id" jdbcType="INTEGER" property="eId.eId" /> -->
+    <result column="re_reward" jdbcType="INTEGER" property="reReward" />
+    <result column="re_redate" jdbcType="DATE" property="reRedate" />
+    <result column="re_rereson" jdbcType="VARCHAR" property="reRereson" />
+    <result column="re_punish" jdbcType="INTEGER" property="rePunish" />
+    <result column="re_pudate" jdbcType="DATE" property="rePudate" />
+    <result column="re_pureson" jdbcType="VARCHAR" property="rePureson" />
+    <result column="re_date" jdbcType="DATE" property="reDate" />
+    <association property="eId" column="e_id" select="com.pxxy.personManagement.mapper.EmployeeMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    re_repuid, e_id, re_reward, re_redate, re_rereson, re_punish, re_pudate, re_pureson, 
+    re_date
+  </sql>
+  <select id="selectPageByeId" resultMap="BaseResultMap">
+  	SELECT * FROM reward WHERE e_id=#{eId} LIMIT #{page},#{limit}
+  </select>
+  <select id="selectByExample" parameterType="com.pxxy.personManagement.domain.RewardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from reward
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from reward
+    where re_repuid = #{reRepuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from reward
+    where re_repuid = #{reRepuid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pxxy.personManagement.domain.RewardExample">
+    delete from reward
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pxxy.personManagement.domain.Reward">
+    insert into reward (re_repuid, e_id, re_reward, 
+      re_redate, re_rereson, re_punish, 
+      re_pudate, re_pureson, re_date
+      )
+    values (#{reRepuid,jdbcType=INTEGER}, #{eId.eId,jdbcType=INTEGER}, #{reReward,jdbcType=INTEGER}, 
+      #{reRedate,jdbcType=DATE}, #{reRereson,jdbcType=VARCHAR}, #{rePunish,jdbcType=INTEGER}, 
+      #{rePudate,jdbcType=DATE}, #{rePureson,jdbcType=VARCHAR}, #{reDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pxxy.personManagement.domain.Reward">
+    insert into reward
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="reRepuid != null">
+        re_repuid,
+      </if>
+      <if test="eId.eId != null">
+        e_id,
+      </if>
+      <if test="reReward != null">
+        re_reward,
+      </if>
+      <if test="reRedate != null">
+        re_redate,
+      </if>
+      <if test="reRereson != null">
+        re_rereson,
+      </if>
+      <if test="rePunish != null">
+        re_punish,
+      </if>
+      <if test="rePudate != null">
+        re_pudate,
+      </if>
+      <if test="rePureson != null">
+        re_pureson,
+      </if>
+      <if test="reDate != null">
+        re_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="reRepuid != null">
+        #{reRepuid,jdbcType=INTEGER},
+      </if>
+      <if test="eId.eId != null">
+        #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="reReward != null">
+        #{reReward,jdbcType=INTEGER},
+      </if>
+      <if test="reRedate != null">
+        #{reRedate,jdbcType=DATE},
+      </if>
+      <if test="reRereson != null">
+        #{reRereson,jdbcType=VARCHAR},
+      </if>
+      <if test="rePunish != null">
+        #{rePunish,jdbcType=INTEGER},
+      </if>
+      <if test="rePudate != null">
+        #{rePudate,jdbcType=DATE},
+      </if>
+      <if test="rePureson != null">
+        #{rePureson,jdbcType=VARCHAR},
+      </if>
+      <if test="reDate != null">
+        #{reDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pxxy.personManagement.domain.RewardExample" resultType="java.lang.Long">
+    select count(*) from reward
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update reward
+    <set>
+      <if test="record.reRepuid != null">
+        re_repuid = #{record.reRepuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.eId.eId != null">
+        e_id = #{record.eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="record.reReward != null">
+        re_reward = #{record.reReward,jdbcType=INTEGER},
+      </if>
+      <if test="record.reRedate != null">
+        re_redate = #{record.reRedate,jdbcType=DATE},
+      </if>
+      <if test="record.reRereson != null">
+        re_rereson = #{record.reRereson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rePunish != null">
+        re_punish = #{record.rePunish,jdbcType=INTEGER},
+      </if>
+      <if test="record.rePudate != null">
+        re_pudate = #{record.rePudate,jdbcType=DATE},
+      </if>
+      <if test="record.rePureson != null">
+        re_pureson = #{record.rePureson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reDate != null">
+        re_date = #{record.reDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update reward
+    set re_repuid = #{record.reRepuid,jdbcType=INTEGER},
+      e_id = #{record.eId.eId,jdbcType=INTEGER},
+      re_reward = #{record.reReward,jdbcType=INTEGER},
+      re_redate = #{record.reRedate,jdbcType=DATE},
+      re_rereson = #{record.reRereson,jdbcType=VARCHAR},
+      re_punish = #{record.rePunish,jdbcType=INTEGER},
+      re_pudate = #{record.rePudate,jdbcType=DATE},
+      re_pureson = #{record.rePureson,jdbcType=VARCHAR},
+      re_date = #{record.reDate,jdbcType=DATE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pxxy.personManagement.domain.Reward">
+    update reward
+    <set>
+      <if test="eId.eId != null">
+        e_id = #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="reReward != null">
+        re_reward = #{reReward,jdbcType=INTEGER},
+      </if>
+      <if test="reRedate != null">
+        re_redate = #{reRedate,jdbcType=DATE},
+      </if>
+      <if test="reRereson != null">
+        re_rereson = #{reRereson,jdbcType=VARCHAR},
+      </if>
+      <if test="rePunish != null">
+        re_punish = #{rePunish,jdbcType=INTEGER},
+      </if>
+      <if test="rePudate != null">
+        re_pudate = #{rePudate,jdbcType=DATE},
+      </if>
+      <if test="rePureson != null">
+        re_pureson = #{rePureson,jdbcType=VARCHAR},
+      </if>
+      <if test="reDate != null">
+        re_date = #{reDate,jdbcType=DATE},
+      </if>
+    </set>
+    where re_repuid = #{reRepuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pxxy.personManagement.domain.Reward">
+    update reward
+    set e_id = #{eId.eId,jdbcType=INTEGER},
+      re_reward = #{reReward,jdbcType=INTEGER},
+      re_redate = #{reRedate,jdbcType=DATE},
+      re_rereson = #{reRereson,jdbcType=VARCHAR},
+      re_punish = #{rePunish,jdbcType=INTEGER},
+      re_pudate = #{rePudate,jdbcType=DATE},
+      re_pureson = #{rePureson,jdbcType=VARCHAR},
+      re_date = #{reDate,jdbcType=DATE}
+    where re_repuid = #{reRepuid,jdbcType=INTEGER}
+  </update>
+</mapper>

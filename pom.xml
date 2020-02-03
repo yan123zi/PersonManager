@@ -1,0 +1,149 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.pxxy.personManagement</groupId>
+  <artifactId>PersonManagement</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <properties>
+  		<spring.version>5.1.3.RELEASE</spring.version>
+  		<mysql.version>5.1.38</mysql.version>
+  		<mybatis.version>3.4.6</mybatis.version>
+  		<mybatis-spring.version>2.0.0</mybatis-spring.version>
+  		<jstl.version>1.2</jstl.version>
+  		<druid.version>1.1.10</druid.version>
+  </properties>
+  <dependencies>
+  	<!-- spring的基本依赖 -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-context</artifactId>
+	    <version>${spring.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-context-support</artifactId>
+	    <version>${spring.version}</version>
+	</dependency>
+	<!-- spring的orm依赖 -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-orm</artifactId>
+	    <version>${spring.version}</version>
+	</dependency>
+	<!-- spring的mvc依赖 -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+	<!-- mysql的驱动 -->
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>${mysql.version}</version>
+	</dependency>
+	<!-- mybatis的依赖 -->
+	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis</artifactId>
+	    <version>${mybatis.version}</version>
+	</dependency>
+	<!-- mybatis整合spring的依赖 -->
+	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis-spring</artifactId>
+	    <version>${mybatis-spring.version}</version>
+	</dependency>
+	<!-- jstl依赖-->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jstl</artifactId>
+	    <version>${jstl.version}</version>
+	</dependency>
+	<!-- druid数据库连接池-->
+	<dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>druid</artifactId>
+	    <version>${druid.version}</version>
+	</dependency>
+	<!-- json格式转换 -->
+	<dependency>
+	 <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-databind</artifactId> 
+	  <version>2.9.5</version> 
+	 </dependency>
+	 <!-- 文件上传 -->
+	<dependency>
+	    <groupId>commons-fileupload</groupId>
+	    <artifactId>commons-fileupload</artifactId>
+	    <version>1.3.3</version>
+	</dependency>
+	<!-- log4j -->
+	<!--解决Spring使用slf4j输出日志与log4j冲突的问题-->  
+	<dependency>  
+	    <groupId>org.slf4j</groupId>  
+	    <artifactId>slf4j-log4j12</artifactId>  
+	    <version>1.6.6</version>  
+	</dependency>  
+	<!-- log4j的包 -->
+	<dependency>  
+	    <groupId>org.slf4j</groupId>  
+	    <artifactId>slf4j-api</artifactId>  
+	    <version>1.6.6</version>  
+	</dependency>  
+	<dependency>  
+	    <groupId>log4j</groupId>  
+	    <artifactId>log4j</artifactId>  
+	    <version>1.2.16</version>  
+	</dependency>
+	<!-- pagehelper依赖 -->
+	<dependency>
+	    <groupId>com.github.pagehelper</groupId>
+	    <artifactId>pagehelper</artifactId>
+	    <version>5.1.8</version>
+	</dependency>
+	<!-- 短信发送接口 -->
+    <dependency>
+       <groupId>com.zhenzikj</groupId>
+       <artifactId>zhenzisms</artifactId>
+       <version>1.0.2</version>
+    </dependency>
+	<!-- junit测试 -->
+	<dependency>
+	    <groupId>junit</groupId>
+	    <artifactId>junit</artifactId>
+	    <version>4.12</version>
+	    <scope>test</scope>
+	</dependency>
+	<!-- fastjson -->
+	<dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	    <version>1.2.47</version>
+	</dependency>
+	<!-- spring-test -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-test</artifactId>
+	    <version>${spring.version}</version>
+	</dependency>
+	<!-- mail -->
+	<dependency>
+	    <groupId>javax.mail</groupId>
+	    <artifactId>mail</artifactId>
+	    <version>1.4.7</version>
+	</dependency>
+	<!-- shiro-spring -->
+	<!-- <dependency>
+	    <groupId>org.apache.shiro</groupId>
+	    <artifactId>shiro-spring</artifactId>
+	    <version>1.4.0</version>
+	</dependency>
+	ehcache
+	<dependency>
+	    <groupId>org.apache.shiro</groupId>
+	    <artifactId>shiro-ehcache</artifactId>
+	    <version>1.4.0</version>
+	</dependency> -->
+  </dependencies>
+</project>

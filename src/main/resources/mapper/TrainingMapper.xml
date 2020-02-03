@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxxy.personManagement.mapper.TrainingMapper">
+  <resultMap id="BaseResultMap" type="com.pxxy.personManagement.domain.Training">
+    <id column="t_id" jdbcType="INTEGER" property="tId" />
+    <result column="t_date" jdbcType="DATE" property="tDate" />
+    <result column="t_plan" jdbcType="VARCHAR" property="tPlan" />
+    <result column="d_name" jdbcType="VARCHAR" property="dName" />
+    <result column="p_position" jdbcType="VARCHAR" property="pPosition" />
+    <result column="t_man" jdbcType="VARCHAR" property="tMan" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.pxxy.personManagement.domain.Training">
+    <result column="t_desc" jdbcType="LONGVARCHAR" property="tDesc" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    t_id, t_date, t_plan, d_name, p_position, t_man
+  </sql>
+  <sql id="Blob_Column_List">
+    t_desc
+  </sql>
+  <select id="selectPageByeId" parameterType="hashmap" resultMap="BaseResultMap">
+  	SELECT * FROM training WHERE p_position=#{pName} LIMIT #{page},#{limit}
+  </select>
+  <select id="selectByExampleWithBLOBs" parameterType="com.pxxy.personManagement.domain.TrainingExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from training
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.pxxy.personManagement.domain.TrainingExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from training
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from training
+    where t_id = #{tId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from training
+    where t_id = #{tId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pxxy.personManagement.domain.TrainingExample">
+    delete from training
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pxxy.personManagement.domain.Training">
+    insert into training (t_id, t_date, t_plan, 
+      d_name, p_position, t_man, 
+      t_desc)
+    values (#{tId,jdbcType=INTEGER}, #{tDate,jdbcType=DATE}, #{tPlan,jdbcType=VARCHAR}, 
+      #{dName,jdbcType=VARCHAR}, #{pPosition,jdbcType=VARCHAR}, #{tMan,jdbcType=VARCHAR}, 
+      #{tDesc,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pxxy.personManagement.domain.Training">
+    insert into training
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tId != null">
+        t_id,
+      </if>
+      <if test="tDate != null">
+        t_date,
+      </if>
+      <if test="tPlan != null">
+        t_plan,
+      </if>
+      <if test="dName != null">
+        d_name,
+      </if>
+      <if test="pPosition != null">
+        p_position,
+      </if>
+      <if test="tMan != null">
+        t_man,
+      </if>
+      <if test="tDesc != null">
+        t_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tId != null">
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="tDate != null">
+        #{tDate,jdbcType=DATE},
+      </if>
+      <if test="tPlan != null">
+        #{tPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="dName != null">
+        #{dName,jdbcType=VARCHAR},
+      </if>
+      <if test="pPosition != null">
+        #{pPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="tMan != null">
+        #{tMan,jdbcType=VARCHAR},
+      </if>
+      <if test="tDesc != null">
+        #{tDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pxxy.personManagement.domain.TrainingExample" resultType="java.lang.Long">
+    select count(*) from training
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update training
+    <set>
+      <if test="record.tId != null">
+        t_id = #{record.tId,jdbcType=INTEGER},
+      </if>
+      <if test="record.tDate != null">
+        t_date = #{record.tDate,jdbcType=DATE},
+      </if>
+      <if test="record.tPlan != null">
+        t_plan = #{record.tPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dName != null">
+        d_name = #{record.dName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pPosition != null">
+        p_position = #{record.pPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tMan != null">
+        t_man = #{record.tMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tDesc != null">
+        t_desc = #{record.tDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update training
+    set t_id = #{record.tId,jdbcType=INTEGER},
+      t_date = #{record.tDate,jdbcType=DATE},
+      t_plan = #{record.tPlan,jdbcType=VARCHAR},
+      d_name = #{record.dName,jdbcType=VARCHAR},
+      p_position = #{record.pPosition,jdbcType=VARCHAR},
+      t_man = #{record.tMan,jdbcType=VARCHAR},
+      t_desc = #{record.tDesc,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update training
+    set t_id = #{record.tId,jdbcType=INTEGER},
+      t_date = #{record.tDate,jdbcType=DATE},
+      t_plan = #{record.tPlan,jdbcType=VARCHAR},
+      d_name = #{record.dName,jdbcType=VARCHAR},
+      p_position = #{record.pPosition,jdbcType=VARCHAR},
+      t_man = #{record.tMan,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pxxy.personManagement.domain.Training">
+    update training
+    <set>
+      <if test="tDate != null">
+        t_date = #{tDate,jdbcType=DATE},
+      </if>
+      <if test="tPlan != null">
+        t_plan = #{tPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="dName != null">
+        d_name = #{dName,jdbcType=VARCHAR},
+      </if>
+      <if test="pPosition != null">
+        p_position = #{pPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="tMan != null">
+        t_man = #{tMan,jdbcType=VARCHAR},
+      </if>
+      <if test="tDesc != null">
+        t_desc = #{tDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pxxy.personManagement.domain.Training">
+    update training
+    set t_date = #{tDate,jdbcType=DATE},
+      t_plan = #{tPlan,jdbcType=VARCHAR},
+      d_name = #{dName,jdbcType=VARCHAR},
+      p_position = #{pPosition,jdbcType=VARCHAR},
+      t_man = #{tMan,jdbcType=VARCHAR},
+      t_desc = #{tDesc,jdbcType=LONGVARCHAR}
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pxxy.personManagement.domain.Training">
+    update training
+    set t_date = #{tDate,jdbcType=DATE},
+      t_plan = #{tPlan,jdbcType=VARCHAR},
+      d_name = #{dName,jdbcType=VARCHAR},
+      p_position = #{pPosition,jdbcType=VARCHAR},
+      t_man = #{tMan,jdbcType=VARCHAR}
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+</mapper>

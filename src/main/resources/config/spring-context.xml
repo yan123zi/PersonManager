@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?> <beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd"> 
+        <!-- 扫描外部配置文件 -->
+        <bean id="appProperty"
+		    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		    <property name="locations">
+		        <array>
+		            <value>classpath:app.properties</value>
+		            <value>classpath:config/db.properties</value>
+		            <value>classpath:config/mail.properties</value>
+		        </array>
+		    </property>
+		</bean>
+        <!-- 开启包扫描 -->
+        <context:component-scan base-package="com.pxxy.personManagement">
+        <!-- 不扫描@Controller注解的类-->
+   			 <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+   		 </context:component-scan>
+        <!-- 配置druid数据库连接池 -->
+	    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">  
+			    <property name="url" value="${jdbc.url}" />  
+			    <property name="driverClassName" value="${jdbc.driver}" /> 
+			    <property name="username" value="${jdbc.username}" />  
+			    <property name="password" value="${jdbc.password}" />  
+			    <property name="filters" value="stat" />  
+			    <property name="maxActive" value="20" />   
+			    <property name="initialSize" value="1" />  
+			    <property name="maxWait" value="60000" />  
+			    <property name="minIdle" value="1" />  
+			    <property name="timeBetweenEvictionRunsMillis" value="3000" />  
+			    <property name="minEvictableIdleTimeMillis" value="300000" />  
+			    <property name="validationQuery" value="SELECT 'x'" />  
+			    <property name="testWhileIdle" value="true" />  
+			    <property name="testOnBorrow" value="false" />  
+			    <property name="testOnReturn" value="false" />  
+			    <property name="poolPreparedStatements" value="true" />  
+			    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />  
+	    </bean>       
+	    <!-- 整合mybatis的sqlsessionfactory -->
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<!-- 指定数据源 -->
+			<property name="dataSource" ref="dataSource"></property>
+			<!-- 指定mapper文件路径 -->
+			<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+			<!-- 指定mybatis配置文件的位置 -->
+			<property name="configLocation" value="classpath:config/mybatis-config.xml"></property>
+		</bean>
+		<!-- maper接口所在包名，Spring会自动查找其下的类 动态代理实现 不用写mapper的实现类-->  
+	    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+	        <property name="basePackage" value="com.pxxy.personManagement.mapper" />  
+	        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
+	    </bean>  
+	     <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->  
+	    <bean id="transactionManager"  
+	        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+	        <property name="dataSource" ref="dataSource" />  
+	    </bean>  
+	    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
+	        <property name="host" value="${mail.smtp.host}"/> 
+	        <property name="javaMailProperties">  
+	            <props>  
+	               <prop key="mail.smtp.auth">${mail.smtp.auth}</prop> 
+	                <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>  
+	                <!-- 下面三个是开启ssl安全套接层的配置 -->
+	                <prop key="mail.smtp.socketFactory.fallback">false</prop>  
+	                <prop key="mail.smtp.starttls.enable">true</prop>    
+	                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>  
+	            </props>  
+	        </property>  
+	        <property name="username">  
+	             <value>${mail.smtp.username}</value> <!-- 邮箱的用户名，注意要写正确了 -->  
+	        </property>  
+	        <property name="password">  
+	            <value>${mail.smtp.password}</value> <!-- 邮箱密码 -->  
+	        </property>  
+	         <property name="port">  
+	        <value>${mail.smtp.port}</value>  
+	        </property>  
+    	</bean>  
+	<!-- 开启注解事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>
+
+        
+    

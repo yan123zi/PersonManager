@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxxy.personManagement.mapper.AttendanceMapper">
+  <resultMap id="BaseResultMap" type="com.pxxy.personManagement.domain.Attendance">
+    <id column="at_id" jdbcType="INTEGER" property="atId" />
+    <result column="at_date" jdbcType="TIMESTAMP" property="atDate" />
+    <!-- <result column="e_id" jdbcType="INTEGER" property="eId.eId" /> -->
+    <result column="at_sw" jdbcType="TIMESTAMP" property="atSw" />
+    <result column="at_ew" jdbcType="TIMESTAMP" property="atEw" />
+    <result column="at_status" jdbcType="INTEGER" property="atStatus" />
+    <result column="at_desc" jdbcType="VARCHAR" property="atDesc" />
+    <association property="eId" column="e_id" select="com.pxxy.personManagement.mapper.EmployeeMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    at_id, at_date, e_id, at_sw, at_ew, at_status, at_desc
+  </sql>
+  <select id="selectPageByeId" resultMap="BaseResultMap">
+  	SELECT * FROM attendance WHERE e_id=#{eId} LIMIT #{page},#{limit}
+  </select>
+  <select id="selectByExample" parameterType="com.pxxy.personManagement.domain.AttendanceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from attendance
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from attendance
+    where at_id = #{atId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from attendance
+    where at_id = #{atId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pxxy.personManagement.domain.AttendanceExample">
+    delete from attendance
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pxxy.personManagement.domain.Attendance">
+    insert into attendance (at_id, at_date, e_id, 
+      at_sw, at_ew, at_status, 
+      at_desc)
+    values (#{atId,jdbcType=INTEGER}, #{atDate,jdbcType=TIMESTAMP}, #{eId.eId,jdbcType=INTEGER}, 
+      #{atSw,jdbcType=TIMESTAMP}, #{atEw,jdbcType=TIMESTAMP}, #{atStatus,jdbcType=INTEGER}, 
+      #{atDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pxxy.personManagement.domain.Attendance">
+    insert into attendance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="atId != null">
+        at_id,
+      </if>
+      <if test="atDate != null">
+        at_date,
+      </if>
+      <if test="eId.eId != null">
+        e_id,
+      </if>
+      <if test="atSw != null">
+        at_sw,
+      </if>
+      <if test="atEw != null">
+        at_ew,
+      </if>
+      <if test="atStatus != null">
+        at_status,
+      </if>
+      <if test="atDesc != null">
+        at_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="atId != null">
+        #{atId,jdbcType=INTEGER},
+      </if>
+      <if test="atDate != null">
+        #{atDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eId.eId != null">
+        #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="atSw != null">
+        #{atSw,jdbcType=TIMESTAMP},
+      </if>
+      <if test="atEw != null">
+        #{atEw,jdbcType=TIMESTAMP},
+      </if>
+      <if test="atStatus != null">
+        #{atStatus,jdbcType=INTEGER},
+      </if>
+      <if test="atDesc != null">
+        #{atDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pxxy.personManagement.domain.AttendanceExample" resultType="java.lang.Long">
+    select count(*) from attendance
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update attendance
+    <set>
+      <if test="record.atId != null">
+        at_id = #{record.atId,jdbcType=INTEGER},
+      </if>
+      <if test="record.atDate != null">
+        at_date = #{record.atDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.eId.eId != null">
+        e_id = #{record.eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="record.atSw != null">
+        at_sw = #{record.atSw,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.atEw != null">
+        at_ew = #{record.atEw,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.atStatus != null">
+        at_status = #{record.atStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.atDesc != null">
+        at_desc = #{record.atDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update attendance
+    set at_id = #{record.atId,jdbcType=INTEGER},
+      at_date = #{record.atDate,jdbcType=TIMESTAMP},
+      e_id = #{record.eId.eId,jdbcType=INTEGER},
+      at_sw = #{record.atSw,jdbcType=TIMESTAMP},
+      at_ew = #{record.atEw,jdbcType=TIMESTAMP},
+      at_status = #{record.atStatus,jdbcType=INTEGER},
+      at_desc = #{record.atDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pxxy.personManagement.domain.Attendance">
+    update attendance
+    <set>
+      <if test="atDate != null">
+        at_date = #{atDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eId.eId != null">
+        e_id = #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="atSw != null">
+        at_sw = #{atSw,jdbcType=TIMESTAMP},
+      </if>
+      <if test="atEw != null">
+        at_ew = #{atEw,jdbcType=TIMESTAMP},
+      </if>
+      <if test="atStatus != null">
+        at_status = #{atStatus,jdbcType=INTEGER},
+      </if>
+      <if test="atDesc != null">
+        at_desc = #{atDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where at_id = #{atId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pxxy.personManagement.domain.Attendance">
+    update attendance
+    set at_date = #{atDate,jdbcType=TIMESTAMP},
+      e_id = #{eId.eId,jdbcType=INTEGER},
+      at_sw = #{atSw,jdbcType=TIMESTAMP},
+      at_ew = #{atEw,jdbcType=TIMESTAMP},
+      at_status = #{atStatus,jdbcType=INTEGER},
+      at_desc = #{atDesc,jdbcType=VARCHAR}
+    where at_id = #{atId,jdbcType=INTEGER}
+  </update>
+</mapper>

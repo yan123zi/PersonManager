@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxxy.personManagement.mapper.LeaveinfoMapper">
+  <resultMap id="BaseResultMap" type="com.pxxy.personManagement.domain.Leaveinfo">
+    <result column="e_id" jdbcType="INTEGER" property="eId" />
+    <result column="l_aname" jdbcType="VARCHAR" property="lAname" />
+    <result column="l_bname" jdbcType="VARCHAR" property="lBname" />
+    <result column="l_job" jdbcType="VARCHAR" property="lJob" />
+    <result column="l_intime" jdbcType="VARCHAR" property="lIntime" />
+    <result column="l_number" jdbcType="VARCHAR" property="lNumber" />
+    <result column="l_levtime" jdbcType="TIMESTAMP" property="lLevtime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.pxxy.personManagement.domain.Leaveinfo">
+    <result column="l_content" jdbcType="LONGVARCHAR" property="lContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    e_id, l_aname, l_bname, l_job, l_intime, l_number, l_levtime
+  </sql>
+  <sql id="Blob_Column_List">
+    l_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.pxxy.personManagement.domain.LeaveinfoExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leaveinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.pxxy.personManagement.domain.LeaveinfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from leaveinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.pxxy.personManagement.domain.LeaveinfoExample">
+    delete from leaveinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pxxy.personManagement.domain.Leaveinfo">
+    insert into leaveinfo (e_id, l_aname, l_bname, 
+      l_job, l_intime, l_number, 
+      l_levtime, l_content)
+    values (#{eId,jdbcType=INTEGER}, #{lAname,jdbcType=VARCHAR}, #{lBname,jdbcType=VARCHAR}, 
+      #{lJob,jdbcType=VARCHAR}, #{lIntime,jdbcType=VARCHAR}, #{lNumber,jdbcType=VARCHAR}, 
+      #{lLevtime,jdbcType=TIMESTAMP}, #{lContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pxxy.personManagement.domain.Leaveinfo">
+    insert into leaveinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eId != null">
+        e_id,
+      </if>
+      <if test="lAname != null">
+        l_aname,
+      </if>
+      <if test="lBname != null">
+        l_bname,
+      </if>
+      <if test="lJob != null">
+        l_job,
+      </if>
+      <if test="lIntime != null">
+        l_intime,
+      </if>
+      <if test="lNumber != null">
+        l_number,
+      </if>
+      <if test="lLevtime != null">
+        l_levtime,
+      </if>
+      <if test="lContent != null">
+        l_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eId != null">
+        #{eId,jdbcType=INTEGER},
+      </if>
+      <if test="lAname != null">
+        #{lAname,jdbcType=VARCHAR},
+      </if>
+      <if test="lBname != null">
+        #{lBname,jdbcType=VARCHAR},
+      </if>
+      <if test="lJob != null">
+        #{lJob,jdbcType=VARCHAR},
+      </if>
+      <if test="lIntime != null">
+        #{lIntime,jdbcType=VARCHAR},
+      </if>
+      <if test="lNumber != null">
+        #{lNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="lLevtime != null">
+        #{lLevtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lContent != null">
+        #{lContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pxxy.personManagement.domain.LeaveinfoExample" resultType="java.lang.Long">
+    select count(*) from leaveinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update leaveinfo
+    <set>
+      <if test="record.eId != null">
+        e_id = #{record.eId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lAname != null">
+        l_aname = #{record.lAname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lBname != null">
+        l_bname = #{record.lBname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lJob != null">
+        l_job = #{record.lJob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lIntime != null">
+        l_intime = #{record.lIntime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lNumber != null">
+        l_number = #{record.lNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lLevtime != null">
+        l_levtime = #{record.lLevtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lContent != null">
+        l_content = #{record.lContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update leaveinfo
+    set e_id = #{record.eId,jdbcType=INTEGER},
+      l_aname = #{record.lAname,jdbcType=VARCHAR},
+      l_bname = #{record.lBname,jdbcType=VARCHAR},
+      l_job = #{record.lJob,jdbcType=VARCHAR},
+      l_intime = #{record.lIntime,jdbcType=VARCHAR},
+      l_number = #{record.lNumber,jdbcType=VARCHAR},
+      l_levtime = #{record.lLevtime,jdbcType=TIMESTAMP},
+      l_content = #{record.lContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update leaveinfo
+    set e_id = #{record.eId,jdbcType=INTEGER},
+      l_aname = #{record.lAname,jdbcType=VARCHAR},
+      l_bname = #{record.lBname,jdbcType=VARCHAR},
+      l_job = #{record.lJob,jdbcType=VARCHAR},
+      l_intime = #{record.lIntime,jdbcType=VARCHAR},
+      l_number = #{record.lNumber,jdbcType=VARCHAR},
+      l_levtime = #{record.lLevtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

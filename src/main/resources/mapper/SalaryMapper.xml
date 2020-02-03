@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxxy.personManagement.mapper.SalaryMapper">
+  <resultMap id="BaseResultMap" type="com.pxxy.personManagement.domain.Salary">
+    <id column="s_id" jdbcType="INTEGER" property="sId" />
+    <!-- <result column="e_id" jdbcType="INTEGER" property="eId.eId" /> -->
+    <result column="s_salary" jdbcType="DOUBLE" property="sSalary" />
+    <result column="s_social" jdbcType="DOUBLE" property="sSocial" />
+    <result column="s_subsidy" jdbcType="DOUBLE" property="sSubsidy" />
+    <result column="s_final" jdbcType="DOUBLE" property="sFinal" />
+    <association property="eId" column="e_id"  select="com.pxxy.personManagement.mapper.EmployeeMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    s_id, e_id, s_salary, s_social, s_subsidy, s_final
+  </sql>
+  <select id="selectByExample" parameterType="com.pxxy.personManagement.domain.SalaryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from salary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from salary
+    where s_id = #{sId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from salary
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pxxy.personManagement.domain.SalaryExample">
+    delete from salary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pxxy.personManagement.domain.Salary">
+    insert into salary (s_id, e_id, s_salary, 
+      s_social, s_subsidy, s_final
+      )
+    values (#{sId,jdbcType=INTEGER}, #{eId.eId,jdbcType=INTEGER}, #{sSalary,jdbcType=DOUBLE}, 
+      #{sSocial,jdbcType=DOUBLE}, #{sSubsidy,jdbcType=DOUBLE}, #{sFinal,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pxxy.personManagement.domain.Salary">
+  	<selectKey keyProperty="sId" order="AFTER" resultType="java.lang.Integer">
+  	 SELECT LAST_INSERT_ID()	
+ 	</selectKey>
+    insert into salary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        s_id,
+      </if>
+      <if test="eId != null">
+        e_id,
+      </if>
+      <if test="sSalary != null">
+        s_salary,
+      </if>
+      <if test="sSocial != null">
+        s_social,
+      </if>
+      <if test="sSubsidy != null">
+        s_subsidy,
+      </if>
+      <if test="sFinal != null">
+        s_final,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="eId != null">
+        #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="sSalary != null">
+        #{sSalary,jdbcType=DOUBLE},
+      </if>
+      <if test="sSocial != null">
+        #{sSocial,jdbcType=DOUBLE},
+      </if>
+      <if test="sSubsidy != null">
+        #{sSubsidy,jdbcType=DOUBLE},
+      </if>
+      <if test="sFinal != null">
+        #{sFinal,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pxxy.personManagement.domain.SalaryExample" resultType="java.lang.Long">
+    select count(*) from salary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update salary
+    <set>
+      <if test="record.sId != null">
+        s_id = #{record.sId,jdbcType=INTEGER},
+      </if>
+      <if test="record.eId.eId != null">
+        e_id = #{record.eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sSalary != null">
+        s_salary = #{record.sSalary,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sSocial != null">
+        s_social = #{record.sSocial,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sSubsidy != null">
+        s_subsidy = #{record.sSubsidy,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sFinal != null">
+        s_final = #{record.sFinal,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update salary
+    set s_id = #{record.sId,jdbcType=INTEGER},
+      e_id = #{record.eId.eId,jdbcType=INTEGER},
+      s_salary = #{record.sSalary,jdbcType=DOUBLE},
+      s_social = #{record.sSocial,jdbcType=DOUBLE},
+      s_subsidy = #{record.sSubsidy,jdbcType=DOUBLE},
+      s_final = #{record.sFinal,jdbcType=DOUBLE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pxxy.personManagement.domain.Salary">
+    update salary
+    <set>
+      <if test="eId != null">
+        e_id = #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="sSalary != null">
+        s_salary = #{sSalary,jdbcType=DOUBLE},
+      </if>
+      <if test="sSocial != null">
+        s_social = #{sSocial,jdbcType=DOUBLE},
+      </if>
+      <if test="sSubsidy != null">
+        s_subsidy = #{sSubsidy,jdbcType=DOUBLE},
+      </if>
+      <if test="sFinal != null">
+        s_final = #{sFinal,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pxxy.personManagement.domain.Salary">
+    update salary
+    set e_id = #{eId.eId,jdbcType=INTEGER},
+      s_salary = #{sSalary,jdbcType=DOUBLE},
+      s_social = #{sSocial,jdbcType=DOUBLE},
+      s_subsidy = #{sSubsidy,jdbcType=DOUBLE},
+      s_final = #{sFinal,jdbcType=DOUBLE}
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+</mapper>

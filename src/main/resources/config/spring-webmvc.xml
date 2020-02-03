@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">  
+	        <!-- 自动扫描该包 @controller注解的类-->  
+    <context:component-scan base-package="com.pxxy.personManagement.controller"/>  
+
+    <!-- 静态资源处理 -->
+    <mvc:default-servlet-handler/>
+   
+    <!--自动注册 RequestMappingHandlerMapping、RequestMappingHandlerAdapter 等bean -->
+    <mvc:annotation-driven conversion-service="conversionService">
+       <mvc:message-converters register-defaults="true">
+           <bean class="org.springframework.http.converter.StringHttpMessageConverter" >
+               <property name = "supportedMediaTypes">
+                   <list>
+                       <value>application/json;charset=utf-8</value>
+                       <value>text/html;charset=utf-8</value>
+                       <!-- application 可以在任意 form 表单里面 enctype 属性默认找到 -->
+                       <value>application/x-www-form-urlencoded</value>
+                   </list>
+               </property>
+           </bean>
+           <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" ></bean>
+       </mvc:message-converters>
+   </mvc:annotation-driven>
+
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置-->  
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <property name="prefix" value="/WEB-INF/jsps/" />  
+        <property name="suffix" value=".jsp" />  
+    </bean>     
+	<!-- 配置访问静态资源 -->
+    <mvc:resources location="/assets" mapping="/**"/>
+    <mvc:resources location="/static" mapping="/**"/>
+    <!-- 自定义参数绑定 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<!-- 转换器 -->
+		<property name="converters">
+			<list>
+				<!-- 日期类型转换 -->
+				<bean class="com.pxxy.personManagement.utils.DateConverter"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+        <!--defaultEncoding：请求的编码格式必须和用户JSP的编码一致，以便正确读取表单中的内容。 
+            uploadTempDir:文件上传过程中的临时目录，上传完成后，临时文件会自动删除 
+            maxUploadSize:设置文件上传大小上限（单位为字节） --> 
+            <property name="defaultEncoding" value="UTF-8" />
+            <property name="maxUploadSize" value="102400000" />
+            <!-- uploadTempDir可以不做设置，有默认的路径，上传完毕会临时文件会自动被清理掉 -->
+            <!-- <property name="uploadTempDir" value="upload/temp"></property> -->
+    </bean>
+
+<!-- springmvc提供的简单异常处理器 -->
+<!-- <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+     定义默认的异常处理页面
+    <property name="defaultErrorView" value="/jsps/error.jsp"/>
+    定义异常处理页面用来获取异常信息的变量名，也可不定义，默认名为exception 
+    <property name="exceptionAttribute" value="msg"/>
+    定义需要特殊处理的异常，这是重要点 
+    <property name="exceptionMappings">
+        <props>
+            <prop key="ssm.exception.CustomException">/jsps/error.jsp</prop>
+        </props>
+        还可以定义其他的自定义异常
+    </property>
+</bean> -->
+<!-- <bean class="com.pxxy.personManagement.exception.GlobalExceptionHandler"/> -->
+<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/**"/>
+		<mvc:exclude-mapping path="/getCode"/>
+		<mvc:exclude-mapping path="/index"/>
+		<mvc:exclude-mapping path="/assets/**"/>
+		<mvc:exclude-mapping path="/admin/login"/>
+		<mvc:exclude-mapping path="/admin/loginPage"/>
+		<mvc:exclude-mapping path="/employee/login"/>
+		<mvc:exclude-mapping path="/recruit/**"/>
+		<mvc:exclude-mapping path="/applyPage"/>
+		<bean class="com.pxxy.personManagement.interceptor.LoginInterceptor"/>
+	</mvc:interceptor>
+</mvc:interceptors>
+
+
+</beans>

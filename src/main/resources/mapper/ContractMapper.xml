@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxxy.personManagement.mapper.ContractMapper">
+  <resultMap id="BaseResultMap" type="com.pxxy.personManagement.domain.Contract">
+    <id column="c_id" jdbcType="INTEGER" property="cId" />
+    <!-- <result column="e_id" jdbcType="INTEGER" property="eId.eId" /> -->
+    <result column="c_aname" jdbcType="VARCHAR" property="cAname" />
+    <result column="c_bname" jdbcType="VARCHAR" property="cBname" />
+    <result column="c_aaddress" jdbcType="VARCHAR" property="cAaddress" />
+    <result column="c_baddress" jdbcType="VARCHAR" property="cBaddress" />
+    <result column="c_bnumber" jdbcType="VARCHAR" property="cBnumber" />
+    <result column="c_bposition" jdbcType="VARCHAR" property="cBposition" />
+    <association property="eId" column="e_id" select="com.pxxy.personManagement.mapper.EmployeeMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.pxxy.personManagement.domain.Contract">
+    <result column="c_content" jdbcType="LONGVARCHAR" property="cContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_id, e_id, c_aname, c_bname, c_aaddress, c_baddress, c_bnumber, c_bposition
+  </sql>
+  <sql id="Blob_Column_List">
+    c_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.pxxy.personManagement.domain.ContractExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from contract
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.pxxy.personManagement.domain.ContractExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from contract
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from contract
+    where c_id = #{cId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from contract
+    where c_id = #{cId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pxxy.personManagement.domain.ContractExample">
+    delete from contract
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pxxy.personManagement.domain.Contract">
+    insert into contract (c_id, e_id, c_aname, 
+      c_bname, c_aaddress, c_baddress, 
+      c_bnumber, c_bposition, c_content
+      )
+    values (#{cId,jdbcType=INTEGER}, #{eId.eId,jdbcType=INTEGER}, #{cAname,jdbcType=VARCHAR}, 
+      #{cBname,jdbcType=VARCHAR}, #{cAaddress,jdbcType=VARCHAR}, #{cBaddress,jdbcType=VARCHAR}, 
+      #{cBnumber,jdbcType=VARCHAR}, #{cBposition,jdbcType=VARCHAR}, #{cContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pxxy.personManagement.domain.Contract">
+    insert into contract
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="eId.eId != null">
+        e_id,
+      </if>
+      <if test="cAname != null">
+        c_aname,
+      </if>
+      <if test="cBname != null">
+        c_bname,
+      </if>
+      <if test="cAaddress != null">
+        c_aaddress,
+      </if>
+      <if test="cBaddress != null">
+        c_baddress,
+      </if>
+      <if test="cBnumber != null">
+        c_bnumber,
+      </if>
+      <if test="cBposition != null">
+        c_bposition,
+      </if>
+      <if test="cContent != null">
+        c_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="eId.eId != null">
+        #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="cAname != null">
+        #{cAname,jdbcType=VARCHAR},
+      </if>
+      <if test="cBname != null">
+        #{cBname,jdbcType=VARCHAR},
+      </if>
+      <if test="cAaddress != null">
+        #{cAaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cBaddress != null">
+        #{cBaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cBnumber != null">
+        #{cBnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cBposition != null">
+        #{cBposition,jdbcType=VARCHAR},
+      </if>
+      <if test="cContent != null">
+        #{cContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pxxy.personManagement.domain.ContractExample" resultType="java.lang.Long">
+    select count(*) from contract
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update contract
+    <set>
+      <if test="record.cId != null">
+        c_id = #{record.cId,jdbcType=INTEGER},
+      </if>
+      <if test="record.eId.eId != null">
+        e_id = #{record.eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cAname != null">
+        c_aname = #{record.cAname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBname != null">
+        c_bname = #{record.cBname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cAaddress != null">
+        c_aaddress = #{record.cAaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBaddress != null">
+        c_baddress = #{record.cBaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBnumber != null">
+        c_bnumber = #{record.cBnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBposition != null">
+        c_bposition = #{record.cBposition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cContent != null">
+        c_content = #{record.cContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update contract
+    set c_id = #{record.cId,jdbcType=INTEGER},
+      e_id = #{record.eId.eId,jdbcType=INTEGER},
+      c_aname = #{record.cAname,jdbcType=VARCHAR},
+      c_bname = #{record.cBname,jdbcType=VARCHAR},
+      c_aaddress = #{record.cAaddress,jdbcType=VARCHAR},
+      c_baddress = #{record.cBaddress,jdbcType=VARCHAR},
+      c_bnumber = #{record.cBnumber,jdbcType=VARCHAR},
+      c_bposition = #{record.cBposition,jdbcType=VARCHAR},
+      c_content = #{record.cContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update contract
+    set c_id = #{record.cId,jdbcType=INTEGER},
+      e_id = #{record.eId.eId,jdbcType=INTEGER},
+      c_aname = #{record.cAname,jdbcType=VARCHAR},
+      c_bname = #{record.cBname,jdbcType=VARCHAR},
+      c_aaddress = #{record.cAaddress,jdbcType=VARCHAR},
+      c_baddress = #{record.cBaddress,jdbcType=VARCHAR},
+      c_bnumber = #{record.cBnumber,jdbcType=VARCHAR},
+      c_bposition = #{record.cBposition,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pxxy.personManagement.domain.Contract">
+    update contract
+    <set>
+      <if test="eId.eId != null">
+        e_id = #{eId.eId,jdbcType=INTEGER},
+      </if>
+      <if test="cAname != null">
+        c_aname = #{cAname,jdbcType=VARCHAR},
+      </if>
+      <if test="cBname != null">
+        c_bname = #{cBname,jdbcType=VARCHAR},
+      </if>
+      <if test="cAaddress != null">
+        c_aaddress = #{cAaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cBaddress != null">
+        c_baddress = #{cBaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cBnumber != null">
+        c_bnumber = #{cBnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cBposition != null">
+        c_bposition = #{cBposition,jdbcType=VARCHAR},
+      </if>
+      <if test="cContent != null">
+        c_content = #{cContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pxxy.personManagement.domain.Contract">
+    update contract
+    set e_id = #{eId.eId,jdbcType=INTEGER},
+      c_aname = #{cAname,jdbcType=VARCHAR},
+      c_bname = #{cBname,jdbcType=VARCHAR},
+      c_aaddress = #{cAaddress,jdbcType=VARCHAR},
+      c_baddress = #{cBaddress,jdbcType=VARCHAR},
+      c_bnumber = #{cBnumber,jdbcType=VARCHAR},
+      c_bposition = #{cBposition,jdbcType=VARCHAR},
+      c_content = #{cContent,jdbcType=LONGVARCHAR}
+    where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pxxy.personManagement.domain.Contract">
+    update contract
+    set e_id = #{eId.eId,jdbcType=INTEGER},
+      c_aname = #{cAname,jdbcType=VARCHAR},
+      c_bname = #{cBname,jdbcType=VARCHAR},
+      c_aaddress = #{cAaddress,jdbcType=VARCHAR},
+      c_baddress = #{cBaddress,jdbcType=VARCHAR},
+      c_bnumber = #{cBnumber,jdbcType=VARCHAR},
+      c_bposition = #{cBposition,jdbcType=VARCHAR}
+    where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+</mapper>
